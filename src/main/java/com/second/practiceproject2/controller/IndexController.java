@@ -6,7 +6,6 @@ import com.second.practiceproject2.service.AnswerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -29,7 +28,7 @@ public class IndexController {
     private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
-    AnswerService answerService;
+    private AnswerService answerService;
 
     //初始页面
     @RequestMapping(path = {"/","/index"})
@@ -62,7 +61,7 @@ public class IndexController {
         List<String> colors = Arrays.asList(new String[]{"RED","GREEN","BLUE"});
         model.addAttribute("colors",colors);
 
-        Map<String,String> map = new HashMap<>();
+        Map<String,String> map = new HashMap<String,String>();
         for(int i = 0; i< 4; ++i)
         {
             map.put(String.valueOf(i),String.valueOf(i*i));

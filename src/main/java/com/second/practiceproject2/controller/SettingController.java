@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 public class SettingController {
     @Autowired
-    AnswerService answerService;
+    private AnswerService answerService;
     @RequestMapping(path = {"/setting"},method = {RequestMethod.GET})
     @ResponseBody
     public String index()

@@ -53,15 +53,9 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<scope>5.1.45</scope>
+			<scope>8.0.12</scope>
 		</dependency>
-		<!--
-		<dependency>
-			<groupId>org.apache.ibatis</groupId>
-			<artifactId>ibatis-core</artifactId>
-			<version>3.0</version>
-		</dependency>
-		-->
+
 
 	</dependencies>
 

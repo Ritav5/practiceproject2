@@ -1,7 +1,7 @@
 package com.second.practiceproject2;
 
-import com.second.practiceproject2.dao.QuestionDAO;
-import com.second.practiceproject2.dao.UserDAO;
+import com.second.practiceproject2.mapper.QuestionMapper;
+import com.second.practiceproject2.mapper.UserMapper;
 import com.second.practiceproject2.model.Question;
 import com.second.practiceproject2.model.User;
 import org.junit.Assert;
@@ -29,7 +29,8 @@ public class InitDatabaseTests {
 	//}
 	//@Autowired(required = false)
 	//@Resource
-	UserDAO userDAO;
+	//@Resource(name= "userMapper")
+	private UserMapper userMapper;
 
 
 	@Autowired
@@ -38,7 +39,8 @@ public class InitDatabaseTests {
 		//this.questionDAO = questionDAO;
 	//}
 	//@Resource
-	QuestionDAO questionDAO;
+	//@Resource(name= "questionMapper")
+	private QuestionMapper questionMapper;
 
 	@Test
 	public void initDatabase() {
@@ -53,11 +55,11 @@ public class InitDatabaseTests {
 			user.setPassword("");
 			user.setSalt("");
 			//设置
-			userDAO.addUser(user);
+			userMapper.addUser(user);
 
 			user.setPassword("newpassword");
 			//更新
-			userDAO.updatePassword(user);
+			userMapper.updatePassword(user);
 
 			Question question = new Question();
 			question.setCommentCount(i);
@@ -68,14 +70,14 @@ public class InitDatabaseTests {
 			question.setTitle(String.format("TITLE{%d}", i));
 			question.setContent(String.format("emmmm Content %d", i));
 
-			questionDAO.addQuestion(question);
+			questionMapper.addQuestion(question);
 		}
 
-		Assert.assertEquals("newpassword",userDAO.selectById(1).getPassword());
-		userDAO.deleteById(1);
-		Assert.assertNull(userDAO.selectById(1));
+		Assert.assertEquals("newpassword", userMapper.selectById(1).getPassword());
+		userMapper.deleteById(1);
+		Assert.assertNull(userMapper.selectById(1));
 
-		//System.out.print(questionDAO.selectLatestQuestions(0,0,10));
+		System.out.print(questionMapper.selectLatestQuestions(0,0,10));
 
 	}
 

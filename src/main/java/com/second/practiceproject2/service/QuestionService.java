@@ -1,8 +1,9 @@
 package com.second.practiceproject2.service;
 
-import com.second.practiceproject2.dao.QuestionDAO;
+import com.second.practiceproject2.mapper.QuestionMapper;
 import com.second.practiceproject2.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,10 +11,13 @@ import java.util.List;
 @Service
 public class QuestionService {
     @Autowired
-    QuestionDAO questionDAO;
+    //@Autowired()
+    //@Qualifier("questionMapper")
+    //@Resource(name="questionDAO")
+    private QuestionMapper questionMapper;
 
     public List<Question> getLatestQuestions(int userId, int offset, int limit){
-        return questionDAO.selectLatestQuestions(userId, offset, limit);
+        return questionMapper.selectLatestQuestions(userId, offset, limit);
     }
 
 }
