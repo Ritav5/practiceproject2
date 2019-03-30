@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -18,6 +19,7 @@ import java.util.Random;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ComponentScan("com.second.practiceproject2.mapper")
 @Sql("/init-schema.sql")
 public class InitDatabaseTests {
 
@@ -43,14 +45,13 @@ public class InitDatabaseTests {
 	private QuestionMapper questionMapper;
 
 	@Test
-	public void initDatabase() {
-	//public void contextLoads() {
+	public void contextLoads() {
 		Random random = new Random();
 
 		for(int i = 0; i < 9; ++i) {
 			User user = new User();
 			//user.setHeadUrl("");
-			user.setHeadUrl(String.format("http://images.nowcoder.com/head/%dt.png", random.nextInt(1000)));
+			user.setHeadUrl(String.format("http://images.nowcoder.com/head/%dm.png", random.nextInt(1000)));
 			user.setName(String.format("USER%d", i));
 			user.setPassword("");
 			user.setSalt("");

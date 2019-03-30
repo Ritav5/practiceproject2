@@ -92,7 +92,8 @@ public class IndexController {
 
     //301/302页面跳转不知道哪里错了，先注释掉
     /*@RequestMapping(path = {"/redirect/{code}"},method = {RequestMethod.GET })
-    public String RedirectView redirect(@PathVariable("code") int code,                          HttpServletRequest request,
+    public String RedirectView redirect(@PathVariable("code") int code,
+                              HttpServletRequest request,
                           HttpSession httpSession)
     {
         httpSession.setAttribute("msg","jump from redirect");

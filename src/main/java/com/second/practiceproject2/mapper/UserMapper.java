@@ -19,6 +19,9 @@ public interface UserMapper {
     @Select({"select ", SELECT_FIELDS, "from ", TABLE_NAME,"where id = #{id}"})
     public User selectById(int id);
 
+    @Select({"select ", SELECT_FIELDS, "from ", TABLE_NAME,"where name = #{name}"})
+    public User selectByName(String name);
+
     @Update({"update", TABLE_NAME,"set password = #{password} where id = #{id}"})
     public void updatePassword(User user);
 
