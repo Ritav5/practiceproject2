@@ -26,7 +26,7 @@ public class PassportInterceptor implements HandlerInterceptor {
     private UserMapper userMapper;
 
     @Autowired
-    private HostHolder hostHolder;
+    private HostHolder hostHolder;//用户放在hostHolder里面
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
@@ -56,12 +56,15 @@ public class PassportInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
         if (modelAndView != null && hostHolder.getUser() != null) {
+            //在渲染之前加此拦截器，可以使所有的controller在渲染之前得到user
+            // modelAndView对应controller层的model和templates的view模板，可以在模板里直接访问变量user
             modelAndView.addObject("user", hostHolder.getUser());
         }
     }
 
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+        //拦截结束的清理
         hostHolder.clear();
     }
 }

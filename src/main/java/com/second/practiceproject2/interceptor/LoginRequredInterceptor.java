@@ -9,9 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Created by nowcoder on 2016/7/17.
- */
+//未登录跳转拦截器
 @Component
 public class LoginRequredInterceptor implements HandlerInterceptor {
     @Autowired
@@ -19,6 +17,7 @@ public class LoginRequredInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+        //hostHolder没存过用户信息，未登录，则将当前页面作为参数传至登录页面，登陆后可以跳回来
         if (hostHolder.getUser() == null) {
             httpServletResponse.sendRedirect("/reglogin?next=" + httpServletRequest.getRequestURI());
         }

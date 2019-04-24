@@ -78,6 +78,7 @@ public class LoginController {
                     cookie.setMaxAge(3600*24*5);
                 }
                 response.addCookie(cookie);
+                //登录后自动跳回去
                 if (StringUtils.isNotBlank(next)) {
                     return "redirect:" + next;
                 }
@@ -93,9 +94,11 @@ public class LoginController {
         }
     }
 
+    //退出只要把ticket改为无效（status状态为1）
     @RequestMapping(path = {"/logout"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String logout(@CookieValue("ticket") String ticket) {
         userService.logout(ticket);
+        //退出返回首页
         return "redirect:/";
     }
 
