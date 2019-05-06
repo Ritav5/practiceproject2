@@ -49,6 +49,7 @@ public class QuestionController {
     }
 
     @RequestMapping(value = "/question/add", method = {RequestMethod.POST})
+    //生成文章字符串，传递两个参数title和content
     @ResponseBody
     public String addQuestion(@RequestParam("title") String title, @RequestParam("content") String content) {
         try {
@@ -57,8 +58,8 @@ public class QuestionController {
             question.setCreatedDate(new Date());
             question.setTitle(title);
             if (hostHolder.getUser() == null) {
-                question.setUserId(AnswerUtil.ANONYMOUS_USERID);
-                // return WendaUtil.getJSONString(999);
+                question.setUserId(AnswerUtil.ANONYMOUS_USERID);//未登录匿名用户
+                // return AnswerUtil.getJSONString(999);//前端未登录code=999，自动跳转登录页面
             } else {
                 question.setUserId(hostHolder.getUser().getId());
             }

@@ -1,5 +1,6 @@
 package com.second.practiceproject2.util;
 
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,7 +10,7 @@ import java.util.Map;
 public class AnswerUtil {
     private static final Logger logger = LoggerFactory.getLogger(AnswerUtil.class);
 
-    public static int ANONYMOUS_USERID = 3;
+    public static int ANONYMOUS_USERID = 3;//匿名用户ID=3
 
     public static String getJSONString(int code) {
         JSONObject json = new JSONObject();
