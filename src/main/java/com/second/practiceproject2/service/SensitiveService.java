@@ -12,38 +12,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+//初始化service时implements InitializingBean
 public class SensitiveService implements InitializingBean {
 
     private static final Logger logger = LoggerFactory.getLogger(SensitiveService.class);
 
-    /**
-     * 默认敏感词替换符
-     */
+    //默认敏感词替换符
     private static final String DEFAULT_REPLACEMENT = "敏感词";
 
 
     private class TrieNode {
+        // TrieNode前缀树结点
 
-        /**
-         * true 关键词的终结 ； false 继续
-         */
+        // true 表示是敏感词的词尾 ； false 继续
         private boolean end = false;
 
-        /**
-         * key下一个字符，value是对应的节点
-         */
+         //key下一个字符，value是对应的节点，用map存敏感词的结点
         private Map<Character, TrieNode> subNodes = new HashMap<>();
 
-        /**
-         * 向指定位置添加节点树
-         */
+         //向指定位置添加节点树
         void addSubNode(Character key, TrieNode node) {
             subNodes.put(key, node);
         }
 
-        /**
-         * 获取下个节点
-         */
+         //获取下个节点
         TrieNode getSubNode(Character key) {
             return subNodes.get(key);
         }
@@ -60,19 +52,12 @@ public class SensitiveService implements InitializingBean {
             return subNodes.size();
         }
 
-
     }
 
-
-    /**
-     * 根节点
-     */
+     //根节点
     private TrieNode rootNode = new TrieNode();
 
-
-    /**
-     * 判断是否是一个符号
-     */
+     //判断是否是一个符号
     private boolean isSymbol(char c) {
         int ic = (int) c;
         // 0x2E80-0x9FFF 东亚文字范围
@@ -80,9 +65,7 @@ public class SensitiveService implements InitializingBean {
     }
 
 
-    /**
-     * 过滤敏感词
-     */
+    //过滤敏感词
     public String filter(String text) {
         if (StringUtils.isBlank(text)) {
             return text;
