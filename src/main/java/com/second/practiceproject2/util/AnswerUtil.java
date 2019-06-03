@@ -8,6 +8,7 @@ import java.security.MessageDigest;
 import java.util.Map;
 
 public class AnswerUtil {
+    //工具类，打包
     private static final Logger logger = LoggerFactory.getLogger(AnswerUtil.class);
 
     public static int ANONYMOUS_USERID = 3;//匿名用户ID=3
@@ -19,6 +20,7 @@ public class AnswerUtil {
     }
 
     public static String getJSONString(int code, String msg) {
+        //两个返回值，放在JSONChar中，返回string
         JSONObject json = new JSONObject();
         json.put("code", code);
         json.put("msg", msg);

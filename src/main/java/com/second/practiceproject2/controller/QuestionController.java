@@ -64,7 +64,7 @@ public class QuestionController {
                 question.setUserId(hostHolder.getUser().getId());
             }
             if (questionService.addQuestion(question) > 0) {
-                return AnswerUtil.getJSONString(0);
+                return AnswerUtil.getJSONString(0);//成功返回0
             }
         } catch (Exception e) {
             logger.error("增加题目失败" + e.getMessage());
