@@ -18,7 +18,7 @@ public class QuestionService {
     private QuestionMapper questionMapper;
 
     @Autowired
-    SensitiveService sensitiveService;
+    private SensitiveService sensitiveService;
 
     public Question getById(int id) {
         return questionMapper.getById(id);

@@ -26,7 +26,7 @@ public class SensitiveService implements InitializingBean {
     private class TrieNode {
         // true 表示是敏感词的词尾 ； false 继续
         private boolean end = false;
-         //key下一个字符，value是对应的节点，用map存敏感词的结点
+         //key下一个字符，value是对应的节点，用map存敏感词的结点（不知道有几个节点）
         private Map<Character, TrieNode> subNodes = new HashMap<>();
          //向指定位置添加节点树
         void addSubNode(Character key, TrieNode node) {
@@ -53,7 +53,7 @@ public class SensitiveService implements InitializingBean {
      //根节点
     private TrieNode rootNode = new TrieNode();
 
-     //判断是否是一个符号
+     //判断是否是一个符号（防敏感词中间插入符号）
     private boolean isSymbol(char c) {
         int ic = (int) c;
         // 0x2E80-0x9FFF 东亚文字范围
@@ -77,16 +77,15 @@ public class SensitiveService implements InitializingBean {
         //大循环while就是控制2号指针不走到头
         while (position < text.length()) {
             char c = text.charAt(position);//取出当前值
-            // 空格直接跳过
+            //判断是否有符号干扰
             if (isSymbol(c)) {
                 if (tempNode == rootNode) {
                     result.append(c);
                     ++begin;
                 }
-                ++position;
+                ++position;//跳过符号
                 continue;
             }
-
             tempNode = tempNode.getSubNode(c);//取当前节点的下个节点
             // 下一个不匹配，当前位置的匹配结束
             if (tempNode == null) {
@@ -95,17 +94,16 @@ public class SensitiveService implements InitializingBean {
                 begin = position;
                 tempNode = rootNode;
             } else if (tempNode.isKeywordEnd()) {
-                //和结尾相符，为敏感词，从begin到position的位置用replacement替换掉
-                result.append(replacement);
-                position = position + 1;
+                //和结尾相符，为敏感词，从begin到position的位置用replacement打码替换掉
+                result.append(replacement);//此句注释则直接删除敏感词不打码
+                position = position + 1;//2接着敏感词尾向下走，1对齐2，3归位跟节点
                 begin = position;
                 tempNode = rootNode;
             } else {
                 ++position;
             }
         }
-
-        result.append(text.substring(begin));
+        result.append(text.substring(begin));//最后一个
 
         return result.toString();
     }
@@ -115,7 +113,7 @@ public class SensitiveService implements InitializingBean {
         TrieNode tempNode = rootNode;//当前节点指向根
         for (int i = 0; i < lineTxt.length(); ++i) {
             Character c = lineTxt.charAt(i);
-            // 过滤空格
+            // 过滤敏感词文件中敏感词的符号
             if (isSymbol(c)) {
                 continue;
             }
