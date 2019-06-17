@@ -273,7 +273,7 @@ public class MultiThreadTests {
         service.shutdown();
         try {
             System.out.println(future.get());
-            //System.out.println(future.get(100, TimeUnit.MILLISECONDS));
+            //System.out.println(future.get(100, TimeUnit.MILLISECONDS));//查超时异常
         } catch (Exception e) {
             e.printStackTrace();
         }
