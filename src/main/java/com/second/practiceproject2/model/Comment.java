@@ -10,7 +10,7 @@ public class Comment {
     private int entityType;
     private String content;
     private Date createdDate;
-    private int status;
+    private int status;//用于不正常评论的隐藏
 
     public int getId() {
         return id;

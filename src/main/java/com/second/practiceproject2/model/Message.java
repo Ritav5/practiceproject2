@@ -59,6 +59,7 @@ public class Message {
         this.hasRead = hasRead;
     }
 
+    //重载getConversationId，使A到B和B到A的ConversationId保持一致
     public String getConversationId() {
         if (fromId < toId) {
             return String.format("%d_%d", fromId, toId);

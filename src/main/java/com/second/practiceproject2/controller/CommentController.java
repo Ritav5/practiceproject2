@@ -43,14 +43,15 @@ public class CommentController {
     public String addComment(@RequestParam("questionId") int questionId,
                              @RequestParam("content") String content) {
         try {
-            content = HtmlUtils.htmlEscape(content);
-            content = sensitiveService.filter(content);
+            content = HtmlUtils.htmlEscape(content);//去掉html标签防止未知跳转
+            content = sensitiveService.filter(content);//过滤敏感词
             // 过滤content
             Comment comment = new Comment();
             if (hostHolder.getUser() != null) {
-                comment.setUserId(hostHolder.getUser().getId());
+                comment.setUserId(hostHolder.getUser().getId());//用户已登录
             } else {
-                comment.setUserId(AnswerUtil.ANONYMOUS_USERID);
+                comment.setUserId(AnswerUtil.ANONYMOUS_USERID);//用户未登录，匿名用户
+                //return "redirect:/reglogin";//跳转登录
             }
             comment.setContent(content);
             comment.setEntityId(questionId);
@@ -59,7 +60,8 @@ public class CommentController {
             comment.setStatus(0);
 
             commentService.addComment(comment);
-            // 更新题目里的评论数量
+
+            // 更新题目里的评论数量，后期变为异步的
             int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
             questionService.updateCommentCount(comment.getEntityId(), count);
             // 怎么异步化

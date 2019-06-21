@@ -8,10 +8,10 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
-
-@Mapper
+//@Mapper
 public interface MessageMapper {
-    String TABLE_NAME = " message ";
+    String TABLE_NAME = " message ";//表名
+    //包含字段
     String INSERT_FIELDS = " from_id, to_id, content, has_read, conversation_id, created_date ";
     String SELECT_FIELDS = " id, " + INSERT_FIELDS;
 
@@ -22,6 +22,7 @@ public interface MessageMapper {
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where conversation_id=#{conversationId} order by id desc limit #{offset}, #{limit}"})
     List<Message> getConversationDetail(@Param("conversationId") String conversationId,
                                         @Param("offset") int offset, @Param("limit") int limit);
+    //offset和limit用于分页，从第多少开始选多少个
 
     @Select({"select count(id) from ", TABLE_NAME, " where has_read=0 and to_id=#{userId} and conversation_id=#{conversationId}"})
     int getConvesationUnreadCount(@Param("userId") int userId, @Param("conversationId") String conversationId);
