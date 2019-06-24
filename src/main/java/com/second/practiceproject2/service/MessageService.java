@@ -22,6 +22,7 @@ public class MessageService {
         return messageMapper.addMessage(message);
     }
 
+    //这里的Message是在model层定义的
     public List<Message> getConversationDetail(String conversationId, int offset, int limit) {
         return messageMapper.getConversationDetail(conversationId, offset, limit);
     }

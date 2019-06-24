@@ -58,9 +58,11 @@ public class MessageController {
         return "letter";
     }
 
+    //取出所有消息
     @RequestMapping(path = {"/msg/detail"}, method = {RequestMethod.GET})
     public String conversationDetail(Model model, @Param("conversationId") String conversationId) {
         try {
+            //一次取10条。过程：先取消息，再取消息关联用户，把消息放进去，填表
             List<Message> conversationList = messageService.getConversationDetail(conversationId, 0, 10);
             List<ViewObject> messages = new ArrayList<>();
             for (Message msg : conversationList) {
@@ -102,7 +104,8 @@ public class MessageController {
             msg.setCreatedDate(new Date());
             //msg.setConversationId(fromId < toId ? String.format("%d_%d", fromId, toId) : String.format("%d_%d", toId, fromId));
             messageService.addMessage(msg);
-            return AnswerUtil.getJSONString(0);
+            return AnswerUtil.getJSONString(0);//0表示成功
+
         } catch (Exception e) {
             logger.error("增加站内信失败" + e.getMessage());
             return AnswerUtil.getJSONString(1, "插入站内信失败");

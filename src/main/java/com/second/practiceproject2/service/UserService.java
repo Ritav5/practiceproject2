@@ -23,6 +23,13 @@ public class UserService {
     //@Resource(name="userMapper")
     private UserMapper userMapper;
 
+    @Autowired
+    private LoginTicketMapper loginTicketMapper;
+
+    public User selectByName(String name) {
+        return userMapper.selectByName(name);
+    }
+
     public Map<String, Object> register(String username, String password) {
         Map<String, Object> map = new HashMap<String, Object>();
         if (StringUtils.isEmpty(username)) {
