@@ -39,12 +39,15 @@ public class MessageController {
     @RequestMapping(path = {"/msg/list"}, method = {RequestMethod.GET})
     public String conversationDetail(Model model) {
         try {
-            int localUserId = hostHolder.getUser().getId();
+            int localUserId = hostHolder.getUser().getId();//当前用户
             List<ViewObject> conversations = new ArrayList<ViewObject>();
+            //最近十个
             List<Message> conversationList = messageService.getConversationList(localUserId, 0, 10);
+            //遍历message
             for (Message msg : conversationList) {
                 ViewObject vo = new ViewObject();
                 vo.set("conversation", msg);
+                //判断from和to哪个是对方的ID
                 int targetId = msg.getFromId() == localUserId ? msg.getToId() : msg.getFromId();
                 User user = userService.getUser(targetId);
                 vo.set("user", user);
