@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -31,12 +30,12 @@ public class MailSender implements InitializingBean {
             InternetAddress from = new InternetAddress(nick + "<course@nowcoder.com>");
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
-            String result = VelocityEngineUtils
-                    .mergeTemplateIntoString(velocityEngine, template, "UTF-8", model);
+            //String result = VelocityEngineUtils
+                    //.mergeTemplateIntoString(velocityEngine, template, "UTF-8", model);
             mimeMessageHelper.setTo(to);
             mimeMessageHelper.setFrom(from);
             mimeMessageHelper.setSubject(subject);
-            mimeMessageHelper.setText(result, true);
+            //mimeMessageHelper.setText(result, true);
             mailSender.send(mimeMessage);
             return true;
         } catch (Exception e) {
