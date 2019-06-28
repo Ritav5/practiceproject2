@@ -22,8 +22,7 @@ public class MailSender implements InitializingBean {
 
     //@Autowired
     //private VelocityEngine velocityEngine;
-    @Autowired
-    private FreemakerEngine freemakerEngine;
+
 
     public boolean sendWithHTMLTemplate(String to, String subject,
                                         String template, Map<String, Object> model) {
@@ -34,12 +33,12 @@ public class MailSender implements InitializingBean {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
             //String result = VelocityEngineUtils
                     //.mergeTemplateIntoString(velocityEngine, template, "UTF-8", model);
-            String result = FreemakerEngineUtils
-                    .mergeTemplateIntoString(freemakerEngine, template, "UTF-8", model);
+            //String result = FreemakerEngineUtils
+                    //.mergeTemplateIntoString(freemakerEngine, template, "UTF-8", model);
             mimeMessageHelper.setTo(to);
             mimeMessageHelper.setFrom(from);
             mimeMessageHelper.setSubject(subject);
-            mimeMessageHelper.setText(result, true);
+            //mimeMessageHelper.setText(result, true);
             mailSender.send(mimeMessage);
             return true;
         } catch (Exception e) {

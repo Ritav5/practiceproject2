@@ -84,66 +84,69 @@ public class JedisAdapter implements InitializingBean {
             jedis.sadd(likeKey1, String.valueOf(i));
             jedis.sadd(likeKey2, String.valueOf(i*i));
         }
-        print(20, jedis.smembers(likeKey1));
+        print(20, jedis.smembers(likeKey1));//取集合的成员
         print(21, jedis.smembers(likeKey2));
-        print(22, jedis.sunion(likeKey1, likeKey2));
-        print(23, jedis.sdiff(likeKey1, likeKey2));
-        print(24, jedis.sinter(likeKey1, likeKey2));
-        print(25, jedis.sismember(likeKey1, "12"));
+        print(22, jedis.sunion(likeKey1, likeKey2));//求并
+        print(23, jedis.sdiff(likeKey1, likeKey2));//求第一个集合有第二个集合没有的
+        print(24, jedis.sinter(likeKey1, likeKey2));//求交
+        print(25, jedis.sismember(likeKey1, "12"));//查询某元素是否是成员
         print(26, jedis.sismember(likeKey2, "16"));
-        jedis.srem(likeKey1, "5");
+        jedis.srem(likeKey1, "5");//删除remove某元素
         print(27, jedis.smembers(likeKey1));
-        jedis.smove(likeKey2, likeKey1, "25");
+        jedis.smove(likeKey2, likeKey1, "25");//从第二个集合中把25移动到第一个集合
         print(28, jedis.smembers(likeKey1));
-        print(29, jedis.scard(likeKey1));
+        print(29, jedis.scard(likeKey1));//集合有多少元素
 
+        //优先队列sorted sets，简写为z，类似堆，元素已排序
         String rankKey = "rankKey";
         jedis.zadd(rankKey, 15, "jim");
         jedis.zadd(rankKey, 60, "Ben");
         jedis.zadd(rankKey, 90, "Lee");
         jedis.zadd(rankKey, 75, "Lucy");
         jedis.zadd(rankKey, 80, "Mei");
-        print(30, jedis.zcard(rankKey));
-        print(31, jedis.zcount(rankKey, 61, 100));
-        print(32, jedis.zscore(rankKey, "Lucy"));
-        jedis.zincrby(rankKey, 2, "Lucy");
+        print(30, jedis.zcard(rankKey));//一共几个
+        print(31, jedis.zcount(rankKey, 61, 100));//范围内有几个member
+        print(32, jedis.zscore(rankKey, "Lucy"));//查某个member的score
+        jedis.zincrby(rankKey, 2, "Lucy");//给某个member加分
         print(33, jedis.zscore(rankKey, "Lucy"));
-        jedis.zincrby(rankKey, 2, "Luc");
+        jedis.zincrby(rankKey, 2, "Luc");//若member写错则相当于新增member
         print(34, jedis.zscore(rankKey, "Luc"));
         print(35, jedis.zrange(rankKey, 0, 100));
-        print(36, jedis.zrange(rankKey, 0, 10));
+        print(36, jedis.zrange(rankKey, 0, 10));//低分值排序0-10名
         print(36, jedis.zrange(rankKey, 1, 3));
-        print(36, jedis.zrevrange(rankKey, 1, 3));
+        print(36, jedis.zrevrange(rankKey, 1, 3));//高分值排序
+        //用zrangeByScoreWithScores取分值范围内的
         for (Tuple tuple : jedis.zrangeByScoreWithScores(rankKey, "60", "100")) {
             print(37, tuple.getElement() + ":" + String.valueOf(tuple.getScore()));
         }
 
-        print(38, jedis.zrank(rankKey, "Ben"));
-        print(39, jedis.zrevrank(rankKey, "Ben"));
+        print(38, jedis.zrank(rankKey, "Ben"));//从小到大排名
+        print(39, jedis.zrevrank(rankKey, "Ben"));//从大到小排名
 
         String setKey = "zset";
-        jedis.zadd(setKey, 1, "a");
+        jedis.zadd(setKey, 1, "a");//多人分值一样
         jedis.zadd(setKey, 1, "b");
         jedis.zadd(setKey, 1, "c");
         jedis.zadd(setKey, 1, "d");
         jedis.zadd(setKey, 1, "e");
 
-        print(40, jedis.zlexcount(setKey, "-", "+"));
-        print(41, jedis.zlexcount(setKey, "(b", "[d"));
-        print(42, jedis.zlexcount(setKey, "[b", "[d"));
-        jedis.zrem(setKey, "b");
+        print(40, jedis.zlexcount(setKey, "-", "+"));//所有按字典序排序，-为负无穷+为正无穷
+        print(41, jedis.zlexcount(setKey, "(b", "[d"));//(b,d]按字典序排序
+        print(42, jedis.zlexcount(setKey, "[b", "[d"));//[b,d]按字典序排序
+        jedis.zrem(setKey, "b");//remove
         print(43, jedis.zrange(setKey, 0, 10));
-        jedis.zremrangeByLex(setKey, "(c", "+");
+        jedis.zremrangeByLex(setKey, "(c", "+");//按字典序删除范围
         print(44, jedis.zrange(setKey, 0 ,2));
 
-        /*
+        /*//redis连接池
         JedisPool pool = new JedisPool();
         for (int i = 0; i < 100; ++i) {
             Jedis j = pool.getResource();
             print(45, j.get("pv"));
-            j.close();
+            j.close();//close相当于归还资源，不写则独占资源卡死
         }*/
 
+        //redis做缓存
         User user = new User();
         user.setName("xx");
         user.setPassword("ppp");
@@ -151,10 +154,10 @@ public class JedisAdapter implements InitializingBean {
         user.setSalt("salt");
         user.setId(1);
         print(46, JSONObject.toJSONString(user));
-        jedis.set("user1", JSONObject.toJSONString(user));
+        jedis.set("user1", JSONObject.toJSONString(user));//把用户信息序列化为JSON字符串并存储在redis里
 
         String value = jedis.get("user1");
-        User user2 = JSON.parseObject(value, User.class);
+        User user2 = JSON.parseObject(value, User.class);//取出字符串并反序列化为信息
         print(47, user2);
         int k = 2;
     }
