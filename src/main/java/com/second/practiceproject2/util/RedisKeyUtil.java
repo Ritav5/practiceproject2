@@ -1,6 +1,6 @@
 package com.second.practiceproject2.util;
 
-
+//为保证key不重复，所有redis key都在这里生成
 public class RedisKeyUtil {
     private static String SPLIT = ":";
     private static String BIZ_LIKE = "LIKE";

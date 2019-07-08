@@ -164,9 +164,10 @@ public class JedisAdapter implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        pool = new JedisPool("redis://localhost:6379/10");
+        pool = new JedisPool("redis://localhost:6379/10");//连接池
     }
 
+    //插入
     public long sadd(String key, String value) {
         Jedis jedis = null;
         try {
@@ -182,6 +183,7 @@ public class JedisAdapter implements InitializingBean {
         return 0;
     }
 
+    //移除
     public long srem(String key, String value) {
         Jedis jedis = null;
         try {
@@ -197,6 +199,7 @@ public class JedisAdapter implements InitializingBean {
         return 0;
     }
 
+    //计数
     public long scard(String key) {
         Jedis jedis = null;
         try {
@@ -212,6 +215,7 @@ public class JedisAdapter implements InitializingBean {
         return 0;
     }
 
+    //是否为成员
     public boolean sismember(String key, String value) {
         Jedis jedis = null;
         try {

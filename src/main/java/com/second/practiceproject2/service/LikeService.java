@@ -12,6 +12,7 @@ public class LikeService {
     JedisAdapter jedisAdapter;
 
 
+    //当前有多少赞
     public long getLikeCount(int entityType, int entityId) {
         String likeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
         return jedisAdapter.scard(likeKey);
@@ -30,10 +31,10 @@ public class LikeService {
         String likeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
         jedisAdapter.sadd(likeKey, String.valueOf(userId));
 
-        String disLikeKey = RedisKeyUtil.getDisLikeKey(entityType, entityId);
+        String disLikeKey = RedisKeyUtil.getDisLikeKey(entityType, entityId);//不能同时有赞有踩，所以在踩删掉这个用户
         jedisAdapter.srem(disLikeKey, String.valueOf(userId));
 
-        return jedisAdapter.scard(likeKey);
+        return jedisAdapter.scard(likeKey);//
     }
 
     public long disLike(int userId, int entityType, int entityId) {
